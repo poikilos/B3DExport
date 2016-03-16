@@ -300,7 +300,7 @@ def write_texs(objects=[]):
                         
                         img = getUVTextures(data)[iuvlayer].data[face.index].image
                         
-                        if img:
+                        if img and b3d_parameters.get("export-textures"):
                             
                             if img.filepath in trimmed_paths:
                                 img_name = trimmed_paths[img.filepath]
@@ -1446,11 +1446,12 @@ class B3D_Export_Operator(bpy.types.Operator):
 
     selected = bpy.props.BoolProperty(name="Export Selected Only", default=False)
     vnormals = bpy.props.BoolProperty(name="Export Vertex Normals", default=True)
-    vcolors  = bpy.props.BoolProperty(name="Export Vertex Colors", default=True)
+    vcolors  = bpy.props.BoolProperty(name="Export Vertex Colors", default=False)
     cameras  = bpy.props.BoolProperty(name="Export Cameras", default=False)
     lights   = bpy.props.BoolProperty(name="Export Lights", default=False)
     mipmap   = bpy.props.BoolProperty(name="Mipmap", default=False)
     localsp  = bpy.props.BoolProperty(name="Use Local Space Coords", default=False)
+    textures = bpy.props.BoolProperty(name="Export links to texture files", default=False)
 
     overwrite_without_asking  = bpy.props.BoolProperty(name="Overwrite without asking", default=False)
     
@@ -1480,6 +1481,7 @@ class B3D_Export_Operator(bpy.types.Operator):
         b3d_parameters["lights"         ] = self.lights
         b3d_parameters["mipmap"         ] = self.mipmap
         b3d_parameters["local-space"    ] = self.localsp
+        b3d_parameters["export-textures"] = self.textures
         
         the_scene = context.scene
         
